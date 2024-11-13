@@ -1,0 +1,106 @@
+<mat-toolbar class="mat-elevation-z2" color="primary">
+
+    <mat-icon class="icon"></mat-icon>
+
+    <a routerLink="/home">
+        <span style="margin-left: 10px;">LENSKART</span>
+    </a>
+    <span class="div-spacer"></span>
+    <div class="row">
+        <h3 style="margin-left: 10px;">
+            <a *ngIf="!userService.isUserLoggedIn()" routerLink="/login">
+                <button mat-button>
+                    <mat-icon mat-icon-button class="icon">admin_panel_settings</mat-icon><span> Login</span>
+                </button>
+            </a>
+        </h3>
+        <h3 style="margin-left: 10px;" *ngIf="!userService.isUserLoggedIn()">
+            <a routerLink="/employee-login">
+                <button mat-button>
+                    <mat-icon mat-icon-button class="icon">admin_panel_settings</mat-icon><span>Employee Login</span>
+                </button>
+            </a>
+        </h3>
+        <h3 style="margin-left: 10px;" *ngIf="userService.isAdminLoggedIn()">
+            <a>
+                <button mat-button (click)='openEmployeeForm()'>
+                    <mat-icon mat-icon-button class="icon">person_add </mat-icon><span>Add Employee</span>
+                </button>
+            </a>
+        </h3>
+        <h3 style="margin-left: 10px;" *ngIf="userService.isAdminLoggedIn()">
+            <a>
+                <button mat-button (click)='openProductForm()'>
+                    <mat-icon mat-icon-button class="icon">person_add </mat-icon><span>Add Product</span>
+                </button>
+            </a>
+        </h3>
+        <h3 style="margin-left: 10px;" *ngIf="userService.isCustomerLoggedIn()">
+            <button mat-button routerLink="/your-orders">
+                Your Orders
+            </button>
+        </h3>
+        <h3 style="margin-left: 10px;" *ngIf="userService.isCustomerLoggedIn()">
+            <a>
+                <button mat-button (click)="viewProfile()">
+                    <mat-icon mat-icon-button class="icon">person</mat-icon>
+                </button>
+            </a>
+        </h3>
+        <h3 style="margin-left: 10px;" *ngIf="userService.isCustomerLoggedIn()">
+            <a routerLink="/cart">
+                <button mat-button>
+                    <mat-icon mat-icon-button class="icon">shopping_cart</mat-icon>
+                </button>
+            </a>
+        </h3>
+        <h3 style="margin-left: 10px;">
+            <a *ngIf="userService.isUserLoggedIn()">
+                <button mat-button (click)="userService.logOut()">
+                    <mat-icon mat-icon-button class="icon">logout</mat-icon>
+                </button>
+            </a>
+        </h3>
+    </div>
+</mat-toolbar>
+<div class="full-div" *ngIf="userService.isAdminLoggedIn() || userService.isEmployeeLoggedIn()">
+    <mat-sidenav-container class="row height-100">
+        <mat-sidenav mode="side" #sidenav opened>
+            <mat-list>
+                <div>
+                    <mat-list-item routerLink="employees" *ngIf="userService.isAdminLoggedIn()">
+                        <a class="">Employees</a>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item routerLink="customers" routerLinkActive="" *ngIf="userService.isAdminLoggedIn()">
+                        <a class="">Customers
+                        </a>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item routerLink="products" routerLinkActive="" *ngIf="userService.isAdminLoggedIn()">
+                        <a class="">Products
+                        </a>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item routerLink="orders" routerLinkActive=""
+                        *ngIf="userService.isAdminLoggedIn() || userService.isEmployeeLoggedIn()">
+                        <a class="">Orders
+                        </a>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <mat-list-item routerLink="warehouses" routerLinkActive="" *ngIf="userService.isAdminLoggedIn()">
+                        <a class="">WareHouse
+                        </a>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                </div>
+            </mat-list>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+<div *ngIf="!userService.isUserLoggedIn() || (!userService.isAdminLoggedIn() && !userService.isEmployeeLoggedIn())">
+    <router-outlet></router-outlet>
+</div>
